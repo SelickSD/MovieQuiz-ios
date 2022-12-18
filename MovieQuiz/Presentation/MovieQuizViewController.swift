@@ -57,7 +57,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 0
 
         if currentQuestionIndex == questions.count - 1 {
-            let resultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат \(correctAnswers) / \(questions.count)", buttonText: "Сыграть еще раз?")
+            let resultsViewModel = QuizResultsViewModel(title: "Этот раунд окончен!", text: "Ваш результат \(correctAnswers)/\(questions.count)", buttonText: "Сыграть еще раз?")
             show(quiz: resultsViewModel)
         } else {
             currentQuestionIndex += 1
@@ -90,7 +90,7 @@ final class MovieQuizViewController: UIViewController {
             let viewModel: QuizStepViewModel = QuizStepViewModel(
                 image: image,
                 question: model.text,
-                questionNumber: "\(currentQuestionIndex + 1) / \(questions.count)"
+                questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
             )
             return viewModel
 
@@ -98,7 +98,7 @@ final class MovieQuizViewController: UIViewController {
             let viewModel: QuizStepViewModel = QuizStepViewModel(
                 image: UIImage(),
                 question: model.text,
-                questionNumber: "\(currentQuestionIndex + 1) / \(questions.count)"
+                questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
             )
             return viewModel
         }
