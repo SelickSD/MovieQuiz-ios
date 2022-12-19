@@ -47,6 +47,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
+        view.backgroundColor = .ypBlack
         show(quiz: convert(model: questions[currentQuestionIndex]))
 
     }
@@ -125,19 +126,11 @@ final class MovieQuizViewController: UIViewController {
     }
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: false)
-        } else {
-            showAnswerResult(isCorrect: true)
-        }
+        showAnswerResult(isCorrect: !questions[currentQuestionIndex].correctAnswer)
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
+        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer)
     }
 }
 

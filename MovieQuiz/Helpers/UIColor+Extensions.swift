@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 extension UIColor {
@@ -13,6 +12,10 @@ extension UIColor {
 
     static var ypRed: UIColor {
         self.getColorForName("YP Red")
+    }
+
+    static var ypBlack: UIColor {
+        self.getColorForName("YP Black")
     }
 
 }
