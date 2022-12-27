@@ -7,7 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
     private var currentQuestionIndex: Int = 1
     private var correctAnswers: Int = 0
-
+    private let statistic = StatisticServiceImplementation()
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
@@ -23,6 +23,29 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
+
+//        print(NSHomeDirectory())
+//        resetStatistic()
+
+        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        documentsURL.appendPathComponent("inception.json")
+
+        let jsonString = (try? String(contentsOf: documentsURL)) ?? ""
+        let data = jsonString.data(using: .utf8) ?? Data()
+        
+        do {
+            let movie = try JSONDecoder().decode(Movie.self, from: data)
+            print(movie)
+        } catch {
+            print("Failed to parse: \(error.localizedDescription)")
+        }
+    }
+
+    private func resetStatistic() {
+        statistic.gamesCount = 0
+        statistic.correctAnswers = 0
+        statistic.totalAccuracy = 0.0
+        statistic.bestGame = GameRecord(correct: 0, total: 0, date: Date())
     }
 
     // MARK: - QuestionFactoryDelegate
@@ -52,9 +75,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
         if currentQuestionIndex == questionsAmount {
 
+            statistic.store(correct: correctAnswers, total: questionsAmount)
+
             let model = AlertModel(
                 title: "Этот раунд окончен!",
-                message: "Ваш результат \(correctAnswers)/\(questionsAmount)",
+                message: """
+                Ваш результат \(correctAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(statistic.gamesCount)
+                Рекорд: \(statistic.bestGame.correct)/\(statistic.bestGame.total) (\(statistic.bestGame.date.dateTimeString))
+                Средняя точность: \(String(format: "%.2f", arguments: [statistic.totalAccuracy]))%
+                """,
                 buttonText: "Сыграть еще раз?",
                 completion: { [weak self] _ in
                     guard let self = self else { return }
