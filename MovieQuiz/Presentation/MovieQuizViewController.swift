@@ -4,10 +4,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
-
+    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet weak var yesButton: UIButton!
+    
     private var currentQuestionIndex: Int = 1
     private var correctAnswers: Int = 0
-    private let statistic = StatisticServiceImplementation()
+    private var statistic: StatisticService?
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
@@ -23,29 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         alertPresenter = AlertPresenter(delegate: self)
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
-
-//        print(NSHomeDirectory())
-//        resetStatistic()
-
-        var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        documentsURL.appendPathComponent("inception.json")
-
-        let jsonString = (try? String(contentsOf: documentsURL)) ?? ""
-        let data = jsonString.data(using: .utf8) ?? Data()
-        
-        do {
-            let movie = try JSONDecoder().decode(Movie.self, from: data)
-            print(movie)
-        } catch {
-            print("Failed to parse: \(error.localizedDescription)")
-        }
-    }
-
-    private func resetStatistic() {
-        statistic.gamesCount = 0
-        statistic.correctAnswers = 0
-        statistic.totalAccuracy = 0.0
-        statistic.bestGame = GameRecord(correct: 0, total: 0, date: Date())
+        statistic = StatisticServiceImplementation()
     }
 
     // MARK: - QuestionFactoryDelegate
@@ -69,6 +49,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
 
     private func showNextQuestionOrResults() {
+
+        guard let statistic = statistic else { return }
 
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
@@ -135,12 +117,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
+        noButton.isEnabled = false
         showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.noButton.isEnabled = true
+        }
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         guard let currentQuestion = currentQuestion else { return }
+        yesButton.isEnabled = false
         showAnswerResult(isCorrect: currentQuestion.correctAnswer)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.yesButton.isEnabled = true
+        }
     }
 }
 

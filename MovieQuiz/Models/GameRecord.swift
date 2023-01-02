@@ -27,5 +27,4 @@ struct GameRecord: Codable, Comparable {
     static func > (lhs: GameRecord, rhs: GameRecord) -> Bool {
         lhs.correct > rhs.correct
     }
-
 }
