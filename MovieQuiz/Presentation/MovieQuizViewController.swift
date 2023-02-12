@@ -170,7 +170,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             noButton.isEnabled = false
         }
     }
-    
+
     //MARK: - activityIndicator
 
     private func showLoadingIndicator() {
@@ -182,7 +182,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
 
     private func showNetworkError(message: String) {
-        //        hideLoadingIndicator()
+//                hideLoadingIndicator()
 
         let model = AlertModel(
             title: "Ошибка",

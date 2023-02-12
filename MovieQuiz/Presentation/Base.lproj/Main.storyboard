@@ -44,7 +44,7 @@
                                     </stackView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z1k-mg-v8R" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="43.5" width="374" height="561"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" name="YP Black"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="z1k-mg-v8R" secondAttribute="height" multiplier="2:3" id="IMS-kc-rQR"/>
                                         </constraints>
@@ -60,10 +60,10 @@
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="ZVP-si-sVC" firstAttribute="top" secondItem="poS-Pk-wNr" secondAttribute="top" constant="13" id="JSB-sk-Iyp"/>
+                                            <constraint firstItem="ZVP-si-sVC" firstAttribute="top" relation="lessThanOrEqual" secondItem="poS-Pk-wNr" secondAttribute="top" constant="13" id="JSB-sk-Iyp"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ZVP-si-sVC" secondAttribute="trailing" constant="42" id="deQ-Hz-06b"/>
                                             <constraint firstItem="ZVP-si-sVC" firstAttribute="centerX" secondItem="poS-Pk-wNr" secondAttribute="centerX" id="fpf-bd-CsK"/>
-                                            <constraint firstAttribute="bottom" secondItem="ZVP-si-sVC" secondAttribute="bottom" constant="13" id="oE1-Fl-UQj"/>
+                                            <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="ZVP-si-sVC" secondAttribute="bottom" constant="13" id="oE1-Fl-UQj"/>
                                             <constraint firstItem="ZVP-si-sVC" firstAttribute="leading" relation="lessThanOrEqual" secondItem="poS-Pk-wNr" secondAttribute="leading" constant="42" id="ycX-vF-WXB"/>
                                         </constraints>
                                     </view>
@@ -117,18 +117,19 @@
                                     <constraint firstAttribute="trailing" secondItem="poS-Pk-wNr" secondAttribute="trailing" id="qJu-IV-7S4"/>
                                 </constraints>
                             </stackView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="2Ac-wU-7m2">
-                                <rect key="frame" x="20" y="444" width="374" height="6.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="2Ac-wU-7m2">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="VUj-TW-hf1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="9l7-i1-rMS"/>
+                            <constraint firstItem="2Ac-wU-7m2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="F46-PA-YN4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="VUj-TW-hf1" secondAttribute="bottom" id="ZBc-TM-dCv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="VUj-TW-hf1" secondAttribute="trailing" constant="20" id="ZuB-fd-Sey"/>
                             <constraint firstItem="VUj-TW-hf1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="fwS-63-i34"/>
+                            <constraint firstItem="2Ac-wU-7m2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xlq-Tj-z3p"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -151,6 +152,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="YP Black">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="YP White (iOS)">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
