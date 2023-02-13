@@ -162,13 +162,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
 
     private func setButtonsEnabled(_ isEnabled: Bool) {
-        if isEnabled {
-            yesButton.isEnabled = true
-            noButton.isEnabled = true
-        } else {
-            yesButton.isEnabled = false
-            noButton.isEnabled = false
-        }
+            yesButton.isEnabled = isEnabled
+            noButton.isEnabled = isEnabled
     }
 
     //MARK: - activityIndicator
