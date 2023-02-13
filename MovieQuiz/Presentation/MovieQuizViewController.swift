@@ -150,7 +150,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         showLoadingIndicator()
         setButtonsEnabled(false)
         showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {}
     }
 
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
@@ -158,7 +157,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         showLoadingIndicator()
         setButtonsEnabled(false)
         showAnswerResult(isCorrect: currentQuestion.correctAnswer)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {}
     }
 
     private func setButtonsEnabled(_ isEnabled: Bool) {
