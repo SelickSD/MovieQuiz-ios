@@ -1,5 +1,14 @@
 import UIKit
-final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
+
+//    func show(quiz result: QuizResultsViewModel) {
+//        <#code#>
+//    }
+//
+//    func highlightImageBorder(isCorrectAnswer: Bool) {
+//        <#code#>
+//    }
+
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -99,7 +108,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         activityIndicator.stopAnimating()
     }
 
-    private func showNetworkError(message: String) {
+    func showNetworkError(message: String) {
         presenter.showNetworkError(message: message)
     }
 }
