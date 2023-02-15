@@ -1,5 +1,5 @@
 import UIKit
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, AlertPresenterDelegate {
+final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -8,13 +8,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
-    private let presenter = MovieQuizPresenter()
-    var statistic: StatisticService?
-    var questionFactory: QuestionFactoryProtocol?
+    private var presenter: MovieQuizPresenter!
     var alertPresenter: AlertPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        presenter = MovieQuizPresenter(viewController: self)
 
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
@@ -24,33 +24,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         presenter.viewController = self
         setButtonsEnabled(false)
         alertPresenter = AlertPresenter(delegate: self)
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         showLoadingIndicator()
-        questionFactory?.loadData()
-        statistic = StatisticServiceImplementation()
-    }
-
-    // MARK: - QuestionFactoryDelegate
-
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        presenter.didReceiveNextQuestion(question: question)
-    }
-
-    func didLoadDataFromServer() {
-        hideLoadingIndicator()
-        questionFactory?.requestNextQuestion()
-    }
-
-    func didFailToLoadData(with error: Error) {
-
-        switch error {
-        case NetworkError.codeError:
-            showNetworkError(message: error.localizedDescription)
-        case NetworkError.loadImageError:
-            showImageLoaderError(message: error.localizedDescription)
-        default:
-            break
-        }
     }
 
     private func showImageLoaderError(message: String) {

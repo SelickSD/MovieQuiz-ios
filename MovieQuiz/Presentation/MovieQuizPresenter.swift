@@ -7,13 +7,54 @@
 
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
 
-    let questionsAmount: Int = 10
+    private let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 1
-    var currentQuestion: QuizQuestion?
+    private var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
     private var correctAnswers: Int = 0
+    private var questionFactory: QuestionFactoryProtocol?
+    private var statistic: StatisticService?
+
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+        statistic = StatisticServiceImplementation()
+    }
+
+    // MARK: - QuestionFactoryDelegate
+
+        func didLoadDataFromServer() {
+            viewController?.hideLoadingIndicator()
+            questionFactory?.requestNextQuestion()
+        }
+
+        func didFailToLoadData(with error: Error) {
+            let message = error.localizedDescription
+            showNetworkError(message: message)
+        }
+
+        func didRecieveNextQuestion(question: QuizQuestion?) {
+            guard let question = question else {
+                return
+            }
+
+            currentQuestion = question
+            let viewModel = convert(model: question)
+            DispatchQueue.main.async { [weak self] in
+                self?.viewController?.show(quiz: viewModel)
+            }
+        }
+    
+    func restartGame() {
+        currentQuestionIndex = 0
+        correctAnswers = 0
+        questionFactory?.requestNextQuestion()
+    }
 
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount
@@ -69,7 +110,7 @@ final class MovieQuizPresenter {
     }
     func showNextQuestionOrResults() {
         guard let viewController = viewController else { return }
-        guard let statistic = viewController.statistic else { return }
+        guard let statistic = statistic else { return }
         viewController.setupImage()
 
         if isLastQuestion() {
@@ -87,12 +128,12 @@ final class MovieQuizPresenter {
                 completion: { [weak self] _ in
                     guard let self = self else { return }
                     self.resetQuestionIndex()
-                    self.viewController?.questionFactory?.requestNextQuestion()
+                    self.questionFactory?.requestNextQuestion()
                 })
             viewController.alertPresenter?.showAlert(alertModel: model)
         } else {
             switchToNextQuestion()
-            viewController.questionFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
         }
     }
 
@@ -105,7 +146,7 @@ final class MovieQuizPresenter {
             completion: { [weak self] _ in
                 guard let self = self else { return }
                 self.resetQuestionIndex()
-                self.viewController?.questionFactory?.loadData()
+                self.questionFactory?.loadData()
             })
         viewController?.alertPresenter?.showAlert(alertModel: model)
     }
@@ -113,7 +154,7 @@ final class MovieQuizPresenter {
         let model = AlertModel(title: "Ошибка",
                                message: message,
                                buttonText: "Попробовать еще раз") {_ in
-            self.viewController?.questionFactory?.loadData()
+            self.questionFactory?.loadData()
         }
         viewController?.alertPresenter?.showAlert(alertModel: model)
     }
