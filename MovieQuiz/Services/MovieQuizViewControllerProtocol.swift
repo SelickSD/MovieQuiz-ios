@@ -10,14 +10,10 @@ import Foundation
 protocol MovieQuizViewControllerProtocol: AnyObject {
     func show(quiz step: QuizStepViewModel)
     func setButtonsEnabled(_ isEnabled: Bool)
-    func showAnswerResult(isCorrect: Bool) 
-
+    func showAnswerResult(isCorrect: Bool)
     func showLoadingIndicator()
     func hideLoadingIndicator()
-
     func showNetworkError(message: String)
-
     func setupImage()
-
-    var alertPresenter: AlertPresenterProtocol? { get }
+    func showAlert(alertModel: AlertModel?)
 } 

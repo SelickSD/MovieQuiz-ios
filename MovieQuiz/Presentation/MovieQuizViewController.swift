@@ -1,15 +1,6 @@
 import UIKit
 final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
 
-//    func show(quiz result: QuizResultsViewModel) {
-//        <#code#>
-//    }
-//
-//    func highlightImageBorder(isCorrectAnswer: Bool) {
-//        <#code#>
-//    }
-
-
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -18,13 +9,12 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
     private var presenter: MovieQuizPresenter!
-    var alertPresenter: AlertPresenterProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         presenter = MovieQuizPresenter(viewController: self)
-
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
@@ -36,10 +26,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         showLoadingIndicator()
     }
 
-    private func showImageLoaderError(message: String) {
-        presenter.showImageLoaderError(message: message)
-    }
-
     // MARK: - AlertPresenterDelegate
 
     func didPrepareAlert(alert: UIAlertController?) {
@@ -47,6 +33,10 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         DispatchQueue.main.async { () -> Void in
             self.present(alert, animated: true, completion: nil)
         }
+    }
+
+    func showAlert(alertModel: AlertModel?) {
+        alertPresenter?.showAlert(alertModel: alertModel)
     }
 
     private func showNextQuestionOrResults() {
