@@ -13,8 +13,6 @@ final class StatisticServiceImplementation: StatisticService {
         case correct, total, bestGame, gamesCount
     }
 
-    private let userDefaults = UserDefaults.standard
-
     // MARK: - результат текущей игры
     var correctAnswers: Int {
         get {
@@ -62,6 +60,8 @@ final class StatisticServiceImplementation: StatisticService {
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
+
+    private let userDefaults = UserDefaults.standard
 
     func store(correct count: Int, total amount: Int) {
 
