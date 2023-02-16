@@ -1,6 +1,7 @@
 import UIKit
 final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol {
 
+    // MARK: - IBOutlet
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var counterLabel: UILabel!
@@ -8,26 +9,28 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     @IBOutlet private var yesButton: UIButton!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
 
+    // MARK: - Private Properties
     private var presenter: MovieQuizPresenter!
     private var alertPresenter: AlertPresenterProtocol?
 
+    // MARK: - Initializers
     override func viewDidLoad() {
         super.viewDidLoad()
 
         presenter = MovieQuizPresenter(viewController: self)
+        presenter.viewController = self
+        alertPresenter = AlertPresenter(delegate: self)
+
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
         view.backgroundColor = .ypBlack
         activityIndicator.hidesWhenStopped = true
-        presenter.viewController = self
+
         setButtonsEnabled(false)
-        alertPresenter = AlertPresenter(delegate: self)
-        showLoadingIndicator()
     }
 
-    // MARK: - AlertPresenterDelegate
-
+    // MARK: - Public methods
     func didPrepareAlert(alert: UIAlertController?) {
         guard let alert = alert else { return }
         DispatchQueue.main.async { () -> Void in
@@ -37,10 +40,6 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
 
     func showAlert(alertModel: AlertModel?) {
         alertPresenter?.showAlert(alertModel: alertModel)
-    }
-
-    private func showNextQuestionOrResults() {
-        presenter.showNextQuestionOrResults()
     }
 
     func setupImage() {
@@ -75,20 +74,10 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         }
     }
 
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        presenter.noButtonClicked()
-    }
-
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        presenter.yesButtonClicked()
-    }
-
     func setButtonsEnabled(_ isEnabled: Bool) {
         yesButton.isEnabled = isEnabled
         noButton.isEnabled = isEnabled
     }
-
-    //MARK: - activityIndicator
 
     func showLoadingIndicator() {
         activityIndicator.startAnimating()
@@ -100,5 +89,19 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
 
     func showNetworkError(message: String) {
         presenter.showNetworkError(message: message)
+    }
+
+    // MARK: - IBAction
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        presenter.noButtonClicked()
+    }
+
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        presenter.yesButtonClicked()
+    }
+
+    // MARK: - Private Methods
+    private func showNextQuestionOrResults() {
+        presenter.showNextQuestionOrResults()
     }
 }

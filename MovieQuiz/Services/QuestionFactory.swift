@@ -9,16 +9,21 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
 
+    // MARK: - Public Properties
     weak var delegate: QuestionFactoryDelegate?
+
+    // MARK: - Private Properties
     private let moviesLoader: MoviesLoading
     private var movies: [MostPopularMovie] = []
     private var questions: [QuizQuestion] = []
 
+    // MARK: - Initializers
     init(moviesLoader: MoviesLoading, delegate: QuestionFactoryDelegate? = nil) {
         self.moviesLoader = moviesLoader
         self.delegate = delegate
     }
 
+    // MARK: - Public methods
     func loadData() {
         moviesLoader.loadMovies { [weak self] result in
             DispatchQueue.main.async {
